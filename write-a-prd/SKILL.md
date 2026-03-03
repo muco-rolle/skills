@@ -1,69 +1,70 @@
-This skill will be invoked when the user wants to create a PRD. You should go through the steps below. You may skip steps if you don't consider them necessary.
+---
+name: write-prd
+description: Collaboratively write a Product Requirements Document through structured interview and codebase exploration. Use when user wants to create a PRD, define requirements, plan a new capability, or write a spec.
+---
 
-1. Ask the user for a long, detailed description of the problem they want to solve and any potential ideas for solutions.
+# Write PRD
 
-2. Explore the repo to verify their assertions and understand the current state of the codebase.
+Write a PRD by interviewing the user, exploring the codebase, and producing a structured document.
 
-3. Interview the user relentlessly about every aspect of this plan until you reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one.
+## Rules
 
-4. Sketch out the major modules you will need to build or modify to complete the implementation. Actively look for opportunities to extract deep modules that can be tested in isolation.
+- **One question at a time.** Never fire a list of questions. Wait for the answer before asking the next.
+- **Exhaust each concern.** Follow up on vague answers before moving on. "We'll figure it out later" gets recorded as an open question, not silently accepted.
+- **Stay grounded in the codebase.** Every claim about "how things work today" must be verified by reading code. Don't trust the user's memory of their own codebase.
+- **Decisions over descriptions.** A PRD records what was decided and why, not prose about the problem domain. If a section reads like a blog post, rewrite it.
+- **No rotting details.** Don't include specific file paths, function names, or code snippets. They go stale fast. Use module names and interface descriptions instead.
+- **User can skip.** If the user says "skip" or "move on," respect it but record what was skipped as an open question.
 
-A deep module (as opposed to a shallow module) is one which encapsulates a lot of functionality in a simple, testable interface which rarely changes.
+## Process
 
-Check with the user that these modules match their expectations. Check with the user which modules they want tests written for.
+### 1. Get the problem statement
 
-5. Once you have a complete understanding of the problem and solution, use the template below to write the PRD. The PRD should be submitted as a GitHub issue.
+Ask the user for a detailed description of the problem and any solution ideas. Push back on one-liners — ask what triggered this, who's affected, and what happens if they do nothing.
 
-<prd-template>
+### 2. Explore the codebase
 
-## Problem Statement
+Verify the user's assertions. Specifically look for:
 
-The problem that the user is facing, from the user's perspective.
+- Existing code that partially solves this problem
+- Data models and schema that will be affected
+- Integration points (routes, events, external services)
+- Testing patterns already established in the area
 
-## Solution
+### 3. Interview the user
 
-The solution to the problem, from the user's perspective.
+Walk through each concern area in [INTERVIEW.md](INTERVIEW.md). One question at a time, following up on vague answers. The goal is to resolve every design decision before writing.
 
-## User Stories
+### 4. Sketch modules
 
-A LONG, numbered list of user stories. Each user story should be in the format of:
+Identify the major modules to build or modify. For each module, describe:
 
-1. As an <actor>, I want a <feature>, so that <benefit>
+- **What it encapsulates** — the functionality hidden behind the interface
+- **Its interface** — the narrow surface other code touches
+- **Interface boundaries** — where this module ends and the next begins
 
-<user-story-example>
-1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
-</user-story-example>
+Actively look for deep modules: lots of functionality behind a simple, stable interface. Check with the user that these match their expectations and which ones need tests.
 
-This list of user stories should be extremely extensive and cover all aspects of the feature.
+### 5. Write the PRD
 
-## Implementation Decisions
+Use [TEMPLATE.md](TEMPLATE.md) to produce the final document. Every section has inline guidance — read it before filling in. Submit the PRD as a GitHub issue.
 
-A list of implementation decisions that were made. This can include:
+## Anti-patterns
 
-- The modules that will be built/modified
-- The interfaces of those modules that will be modified
-- Technical clarifications from the developer
-- Architectural decisions
-- Schema changes
-- API contracts
-- Specific interactions
+- **Premature template filling** — Don't start writing the PRD before the interview is done. The template is for recording decisions, not driving discovery.
+- **Accepting deferrals silently** — If the user says "I'll decide later," record it in Further Notes as an open question. Never let it vanish.
+- **Shallow user stories** — "As a user, I want to use the feature" is not a user story. Each story must name a specific actor, action, and measurable benefit.
+- **Copy-pasting the user's words** — Rewrite in precise, technical language. The user's casual description is input, not output.
+- **Ignoring unhappy paths** — For every user story, ask: what happens when this fails? Timeouts, bad input, partial state, race conditions.
 
-Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
+## Review Checklist
 
-## Testing Decisions
+Before submitting, verify:
 
-A list of testing decisions that were made. Include:
-
-- A description of what makes a good test (only test external behavior, not implementation details)
-- Which modules will be tested
-- Prior art for the tests (i.e. similar types of tests in the codebase)
-
-## Out of Scope
-
-A description of the things that are out of scope for this PRD.
-
-## Further Notes
-
-Any further notes about the feature.
-
-</prd-template>
+- [ ] Problem statement explains why this matters, not just what it is
+- [ ] Every user story has a specific actor, action, and benefit
+- [ ] Implementation decisions record what was decided AND why
+- [ ] Out of scope section exists and is non-empty
+- [ ] No file paths, function names, or code snippets in the document
+- [ ] All deferred decisions are recorded as open questions
+- [ ] Testing section references existing test patterns in the codebase
