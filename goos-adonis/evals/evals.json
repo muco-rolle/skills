@@ -1,0 +1,53 @@
+{
+  "skill_name": "goos-adonis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to add a feature to my AdonisJS v7 app where users can create bookmarks for articles. Each bookmark belongs to a user and references an article URL with an optional title and description. The API should let authenticated users create, list, and delete their bookmarks. I already have the User model and auth set up. Can you help me build this with TDD?",
+      "expected_output": "Should follow outside-in TDD: start with a failing acceptance test (API client test for creating a bookmark), then implement route → controller → service → model one RED→GREEN cycle at a time. Should NOT write all tests first. Should use UserFactory, verify through the API (not DB queries), and keep controllers thin with logic in services.",
+      "files": [],
+      "assertions": [
+        {"id": "starts-with-acceptance-test", "text": "Starts with a failing acceptance test before any implementation code"},
+        {"id": "vertical-slices", "text": "Uses vertical slices (one RED→GREEN cycle at a time) rather than writing all tests first"},
+        {"id": "uses-api-client", "text": "Uses @japa/api-client for acceptance tests (not browser client, since this is a JSON API)"},
+        {"id": "verifies-through-api", "text": "Verifies behavior through the API (not direct DB queries)"},
+        {"id": "thin-controller", "text": "Keeps controller thin — delegates business logic to a service layer"},
+        {"id": "planning-phase", "text": "Includes a planning phase that confirms behaviors to test with the user before coding"},
+        {"id": "outside-in-direction", "text": "Develops from inputs to outputs (route → controller → service → model), not bottom-up"},
+        {"id": "test-names-describe-behavior", "text": "Test names describe behaviors (e.g., 'authenticated user can create a bookmark') not methods"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm building an AdonisJS v7 app that needs to send SMS notifications when an order ships. We use Twilio for SMS. I want to add a 'notify customer on shipment' feature. I have the Order model and a basic orders API already working. How should I approach this with proper testing?",
+      "expected_output": "Should identify Twilio as an external boundary requiring an adapter service (e.g., SmsAdapter or TwilioAdapter). Should NOT mock Twilio directly. Should use container.swap() to replace the adapter in tests. Should write a failing acceptance test first (POST /orders/:id/ship), then drive out the adapter and notification service through inner-loop TDD. Should follow 'only mock types you own' principle.",
+      "files": [],
+      "assertions": [
+        {"id": "adapter-pattern", "text": "Introduces an adapter service for Twilio (e.g., SmsAdapter, TwilioAdapter) rather than calling Twilio directly"},
+        {"id": "only-mock-types-you-own", "text": "Mocks the adapter service (type they own), NOT the Twilio SDK directly"},
+        {"id": "container-swap", "text": "Uses container.swap() to replace the adapter in tests"},
+        {"id": "starts-with-acceptance-test", "text": "Starts with a failing acceptance test before implementation"},
+        {"id": "vertical-slices", "text": "Uses vertical slices (one RED→GREEN cycle at a time) rather than writing all tests first"},
+        {"id": "sdk-style-adapter", "text": "Adapter has specific methods per operation (e.g., sendSms), not a generic request wrapper"},
+        {"id": "container-restore", "text": "Restores the container in teardown to prevent test pollution"},
+        {"id": "outside-in-direction", "text": "Develops from inputs to outputs (route → controller → service → adapter), not bottom-up"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I have an AdonisJS v7 app with Inertia.js + React for the frontend. I need to build a settings page where users can update their profile (name, email) and change their password. The password change should require the current password. How do I test-drive this feature?",
+      "expected_output": "Should recommend browser tests (@japa/browser-client) since this is a rendered page. Should suggest class-based page objects (BasePage pattern) for the settings page. Should use role-based locators (getByLabel, getByRole), not CSS selectors. Should follow outside-in: failing browser acceptance test first, then inner-loop for validation logic and password service. Should separate profile update from password change as distinct behaviors with their own RED→GREEN cycles.",
+      "files": [],
+      "assertions": [
+        {"id": "browser-client", "text": "Uses @japa/browser-client for acceptance tests (since this is a rendered Inertia page, not a JSON API)"},
+        {"id": "class-based-page-objects", "text": "Uses class-based page objects (BasePage pattern) for the settings page"},
+        {"id": "role-based-locators", "text": "Uses role-based locators (getByLabel, getByRole, getByText) rather than CSS selectors"},
+        {"id": "starts-with-acceptance-test", "text": "Starts with a failing acceptance test (browser test) before implementation"},
+        {"id": "vertical-slices", "text": "Uses vertical slices (one RED→GREEN cycle at a time) rather than writing all tests first"},
+        {"id": "separate-behaviors", "text": "Treats profile update and password change as separate behaviors with their own test cycles"},
+        {"id": "auto-retrying-assertions", "text": "Uses auto-retrying assertions (assertTextContains, assertVisible) not point-in-time checks"},
+        {"id": "planning-phase", "text": "Includes a planning phase that identifies browser tests as the right tool for rendered pages"}
+      ]
+    }
+  ]
+}

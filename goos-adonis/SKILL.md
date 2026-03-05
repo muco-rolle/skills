@@ -13,6 +13,8 @@ description: Use when building or testing AdonisJS v7 applications with test-dri
 
 **Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying the database directly instead of using the API). The warning sign: your test breaks when you refactor, but behavior hasn't changed.
 
+**Develop from inputs to outputs**: Work outside-in — start from the external event (HTTP request, browser action) and let each test drive you inward through the layers. The acceptance test defines the entry point; inner-loop tests discover the services and collaborators needed to fulfill it. Don't start from the database schema or model layer and build outward.
+
 See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
 
 ## Anti-Pattern: Horizontal Slices
@@ -74,14 +76,18 @@ Before writing any code:
 
 Ask: "What should the public interface look like? Which behaviors matter most?"
 
-### 2. Tracer Bullet
+### 2. Tracer Bullet (Walking Skeleton)
 
-Write ONE failing acceptance test → minimal implementation → GREEN. This is your walking skeleton — proves the path works end-to-end. See [acceptance-tests.md](acceptance-tests.md) for tool selection and examples.
+Write ONE failing acceptance test → minimal implementation → GREEN. This is your walking skeleton — the thinnest end-to-end slice that proves the architecture works. It front-loads integration risk before you write real features.
+
+The walking skeleton decides broad-brush architecture: routing style, rendering approach, database connectivity, authentication mechanism. Keep it thin but real — a health check or the simplest possible version of the first feature.
 
 ```
 API app:    RED: client.post('/endpoint') → GREEN: Route → Controller → Service → Model
 Rendered:   RED: visit('/page') → assertTextContains → GREEN: Route → Controller → View/Inertia
 ```
+
+See [acceptance-tests.md](acceptance-tests.md) for tool selection and examples.
 
 ### 3. Incremental Loop
 
@@ -103,6 +109,17 @@ Rules:
 
 After all tests pass, look for [refactor candidates](refactoring.md). Never refactor while RED — get to GREEN first.
 
+### 5. Brownfield: Adding Features to Existing Code
+
+When working in an existing codebase, the same cycle applies — but start by understanding what's already there:
+
+1. **Read existing tests** to understand current behavior and conventions
+2. **Write a failing acceptance test** for the new feature (same as greenfield)
+3. **Work inward** through existing layers — reuse existing services, models, and patterns
+4. **Extract and refactor** only when the new feature creates clear duplication or design strain
+
+Don't restructure existing code preemptively. Let the new test reveal where the design needs to flex.
+
 ## Per-Cycle Checklist
 
 ```
@@ -114,6 +131,21 @@ After all tests pass, look for [refactor candidates](refactoring.md). Never refa
 [ ] No speculative features added
 ```
 
+## Listening to the Tests (Design Feedback)
+
+When tests are hard to write, that's not a testing problem — it's a design problem. The tests are telling you something about your code's structure:
+
+| Test Smell | What It Means | AdonisJS Fix |
+| --- | --- | --- |
+| Too many `container.swap()` calls in setup | Object has too many dependencies | Split into smaller, focused services |
+| Test setup is 30+ lines | Object does too much | Extract collaborators, simplify the API |
+| Can't test without mocking your own services | Services too tightly coupled | Let services call through real container; test at a higher level |
+| Need to mock concrete classes, not adapters | Missing an abstraction at the boundary | Introduce an adapter service you own |
+| Test name needs "and" | Testing multiple behaviors | Split into separate tests |
+| Mocking values or DTOs | Overusing mocks | Use real value objects — only mock services at system boundaries |
+
+See [goos-principles.md](goos-principles.md) Part IV for the complete "Listening to the Tests" reference.
+
 ## Common Mistakes
 
 | Mistake                                    | Fix                                                       |
@@ -124,6 +156,8 @@ After all tests pass, look for [refactor candidates](refactoring.md). Never refa
 | Fat controllers with all logic inline      | Extract services, inject with `@inject()`                 |
 | Mocking third-party libraries directly     | Write adapter service, mock the adapter                   |
 | Writing all tests before implementation    | Vertical slices: one RED→GREEN cycle at a time            |
+| Starting from the database/model layer     | Develop from inputs to outputs — start from the HTTP request |
+| Building all infrastructure before features | Walking skeleton first — thinnest slice end-to-end        |
 
 ## Detailed References
 

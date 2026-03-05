@@ -104,9 +104,18 @@ test.group('CreatePostService', () => {
 });
 ```
 
-### Step 3: Implement Until Acceptance Test Passes
+### Step 3: Implement Outside-In Until Acceptance Test Passes
 
-Build route → controller → service → model, running unit tests along the way, until the acceptance test goes green.
+Work from the entry point inward — this is "develop from inputs to outputs":
+
+1. **Route** → define the endpoint (the external input)
+2. **Controller** → thin handler that parses request and delegates to a service
+3. **Service** → domain logic, discovered by what the controller needs. If the service needs an external dependency, introduce an adapter (interface you own)
+4. **Model** → persistence, driven by what the service needs to store/retrieve
+
+Each inner step may get its own unit test if the logic is complex enough. But don't write a unit test for a pass-through — only test where there's real behavior.
+
+The acceptance test goes GREEN when the full chain connects.
 
 ## Verify Through the Interface
 

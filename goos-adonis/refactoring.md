@@ -7,10 +7,11 @@ After the TDD cycle, with all tests GREEN, look for these opportunities.
 ## General
 
 - **Duplication** → Extract function/class
-- **Long methods** → Break into private helpers (keep tests on public interface)
+- **Long methods** → Break into small private helpers that express intent (keep tests on public interface). A method should read like a sequence of steps at one level of abstraction.
 - **Shallow modules** → Combine or deepen (see [deep-modules.md](deep-modules.md))
 - **Feature envy** → Move logic to where data lives
-- **Primitive obsession** → Introduce value objects
+- **Primitive obsession** → Introduce value objects (breaking out, budding off, bundling up)
+- **Mixed abstraction levels** → Separate declarative (what) from implementation (how). The top-level method should read like a domain description; details go in helpers.
 
 ## AdonisJS-Specific
 

@@ -117,6 +117,13 @@ Complete reference for "Growing Object-Oriented Software, Guided by Tests" (Free
 - Compose objects to describe system behavior
 - Build up to higher-level programming: declarative layer + implementation layer
 - Higher-level code reads like a domain description
+- **Inverse salami**: Each development slice is thin but coherent end-to-end, not a thick horizontal layer
+
+### Develop from Inputs to Outputs
+- Start from the external event (HTTP request, user action) and work inward
+- Let each test drive you deeper into the system — don't start from the database and build outward
+- The acceptance test defines the entry point; inner-loop tests discover needed collaborators
+- This naturally creates a ports-and-adapters architecture: the outside drives the inside
 
 ### Adapter Layer
 - **Only mock types that you own**
@@ -132,6 +139,10 @@ Complete reference for "Growing Object-Oriented Software, Guided by Tests" (Free
 - **Confused object**: Mixed abstraction levels or mixed responsibilities
 - **Too many dependencies**: Object has too many peers
 - **Too many expectations**: Test is too coupled to implementation
+- **Singletons as hidden dependencies**: If a service reaches for a global/singleton, it's hiding a dependency. Make it explicit through constructor injection so tests can swap it.
+- **From procedures to objects**: If test setup requires calling methods in a specific order ("first call init, then configure, then execute"), the object has a procedural API. Redesign so the object is usable from construction.
+- **Logging is a feature**: If you need to test that something was logged, logging is a domain concern. Treat the logger as an injected dependency (notification peer), not a framework utility.
+- **Mocking concrete classes**: If you're mocking a concrete class rather than an interface/adapter, you're probably missing an abstraction. Introduce a role-based interface.
 
 ### Test Readability
 - **Names describe features**: Test name should state the behavior, not the method
