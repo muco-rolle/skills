@@ -1,0 +1,77 @@
+{
+  "skill_name": "bujo",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to start using bullet journaling for my project. I'm a backend engineer working on a payments service. Can you set it up for me?",
+      "expected_output": "Should create bujo/ directory structure with index.md, future-log.md, monthly log for current month, and today's daily log. Should use correct templates. Should ask about upcoming deadlines/events before populating the future log and monthly calendar. Should explain the notation system briefly. Should NOT pre-create any collections.",
+      "files": [],
+      "assertions": [
+        {"id": "creates-directory-structure", "text": "Creates bujo/ with index.md, future-log.md, monthly/ and daily/ subdirectories, and collections/ directory"},
+        {"id": "uses-templates", "text": "Files follow the templates from TEMPLATES.md (index with links, monthly with Calendar and Tasks sections, daily with Morning Priorities/Log/End of Day)"},
+        {"id": "asks-about-events", "text": "Asks the user about upcoming deadlines, events, or milestones before populating the calendar"},
+        {"id": "explains-notation", "text": "Briefly explains or references the notation system (task states, events, notes, signifiers)"},
+        {"id": "no-premature-collections", "text": "Does NOT create any collections proactively — the collections/ directory is empty"},
+        {"id": "updates-index", "text": "Adds the monthly log to the index"},
+        {"id": "correct-dates", "text": "Uses the actual current date for file names and content"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Log my work today: finished the API refactor for the payments endpoint, had a standup at 9:30am where we discussed the migration timeline, need to review PR #42 from Sarah, need to update the deployment docs, and I had an idea about using event sourcing for the audit trail.",
+      "expected_output": "Should create today's daily log with proper notation: completed task marked [x], event with (o), open tasks with [ ], and the idea marked with ! signifier. Should distinguish between tasks, events, and notes correctly. Should ask about morning priorities if not already set.",
+      "files": ["bujo/index.md", "bujo/monthly/2026-03.md"],
+      "assertions": [
+        {"id": "correct-task-notation", "text": "Uses [x] for the completed API refactor and [ ] for open tasks (review PR, update docs)"},
+        {"id": "correct-event-notation", "text": "Uses (o) for the standup event"},
+        {"id": "inspiration-signifier", "text": "Uses ! signifier for the event sourcing idea"},
+        {"id": "creates-daily-file", "text": "Creates or updates bujo/daily/YYYY-MM-DD.md with proper template structure"},
+        {"id": "distinguishes-entry-types", "text": "Correctly classifies each item as task, event, or note — does not make everything a task"},
+        {"id": "append-only", "text": "Appends to the Log section rather than restructuring or rewriting existing content"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Let's do my monthly review. It's the end of the month and I want to migrate to next month.",
+      "expected_output": "Should scan for all incomplete tasks across daily logs, monthly log, and collections. Should present monthly reflection prompts. Should walk through each incomplete task ONE AT A TIME asking the user to decide: complete, migrate, schedule, move to collection, or drop. Should flag any task migrated 3+ times. Should create next month's log with migrated items. Should update the index.",
+      "files": ["bujo/index.md", "bujo/future-log.md", "bujo/monthly/2026-03.md", "bujo/daily/2026-03-01.md", "bujo/daily/2026-03-02.md", "bujo/daily/2026-03-03.md"],
+      "assertions": [
+        {"id": "scans-incomplete", "text": "Scans for incomplete tasks ([ ]) across daily logs, monthly log, and collections"},
+        {"id": "one-at-a-time", "text": "Presents incomplete tasks ONE AT A TIME for the user to decide, not as a batch list"},
+        {"id": "reflection-prompts", "text": "Asks monthly reflection questions (what worked, what didn't, patterns in migration vs completion)"},
+        {"id": "marks-original", "text": "Marks each task in its original location with the appropriate symbol ([>], [<], [~], [x])"},
+        {"id": "creates-next-month", "text": "Creates next month's monthly log with migrated items and future log entries"},
+        {"id": "updates-index", "text": "Adds the new monthly log to bujo/index.md"},
+        {"id": "flags-chronic-migration", "text": "Flags any task that has been migrated 3 or more times and investigates why"}
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want to plan a 2-week sprint to ship the authentication feature. We need to add OAuth2 support, implement token refresh, add rate limiting to the auth endpoints, and write integration tests.",
+      "expected_output": "Should ask about the sprint goal (what does done look like). Should break down the high-level items into 1-day granularity tasks collaboratively with the user. Should create a sprint collection using the sprint template. Should add the sprint to the index and monthly calendar.",
+      "files": ["bujo/index.md", "bujo/monthly/2026-03.md"],
+      "assertions": [
+        {"id": "asks-sprint-goal", "text": "Asks what the sprint goal is — what does 'done' look like at the end"},
+        {"id": "breaks-down-tasks", "text": "Breaks the 4 high-level items into smaller tasks at roughly 1-day granularity"},
+        {"id": "uses-sprint-template", "text": "Creates a sprint collection using the sprint template (Goal, Duration, Tasks, Progress, Retrospective sections)"},
+        {"id": "adds-to-index", "text": "Adds the sprint collection to bujo/index.md"},
+        {"id": "adds-to-calendar", "text": "Adds sprint start and end dates to the monthly calendar"},
+        {"id": "collaborative", "text": "Collaborates with the user on task breakdown rather than deciding everything autonomously"}
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Create a collection to track our hiring process for the backend team. We're looking to hire 2 senior engineers and 1 staff engineer.",
+      "expected_output": "Should ask for a mission statement (one sentence). Should explore scope and type. Should create the collection with appropriate structure. Should add to the index. Should NOT over-design the collection — start minimal.",
+      "files": ["bujo/index.md"],
+      "assertions": [
+        {"id": "asks-mission", "text": "Asks for a mission statement — what should this collection accomplish"},
+        {"id": "determines-type", "text": "Identifies appropriate collection type (goal-driven or task-driven) based on the hiring context"},
+        {"id": "asks-scope", "text": "Asks about scope — what's in and what's out of this collection"},
+        {"id": "creates-collection", "text": "Creates bujo/collections/hiring.md (or similar name) with mission, tasks, and notes sections"},
+        {"id": "adds-to-index", "text": "Adds the collection to bujo/index.md"},
+        {"id": "minimal-structure", "text": "Does NOT over-design with excessive sections — starts with a minimal structure that can grow"}
+      ]
+    }
+  ]
+}
