@@ -1,6 +1,6 @@
 ---
 name: goos-adonis
-description: Use when building or testing AdonisJS v7 applications with test-driven development, writing acceptance tests, designing services with dependency injection, creating test doubles with container.swap, or applying outside-in TDD workflow
+description: Use when building, testing, or refactoring AdonisJS v7 applications with test-driven development. Covers outside-in TDD workflow, writing acceptance tests (api-client and browser-client), designing testable services with dependency injection, creating test doubles with container.swap, fixing fragile or slow tests, and restructuring fat controllers into clean service layers
 ---
 
 # GOOS-Style TDD for AdonisJS v7
