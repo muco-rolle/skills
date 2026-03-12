@@ -1,0 +1,41 @@
+{
+  "skill_name": "grill-me",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here's my plan for adding a notifications system to our SaaS app. Users should get email and in-app notifications when someone comments on their posts. We'll use a queue (probably Redis) for processing, SendGrid for emails, and store notification preferences in the user profile. The frontend will poll for new notifications every 30 seconds. We need this done in 3 weeks. /grill-me",
+      "expected_output": "A single, specific question referencing something from the plan — likely targeting polling vs websockets, Redis durability, the 3-week timeline, or notification preference granularity. Should not be a list of questions.",
+      "files": [],
+      "expectations": [
+        "Response contains exactly one question — not a numbered or bulleted list of multiple questions",
+        "The question references something specific from the user's plan (e.g., Redis, polling, SendGrid, 3-week timeline, notification preferences)",
+        "Tone is challenging but constructive — skeptical without being hostile or dismissive",
+        "The question targets a genuine gap or risk in the plan (not something already well-addressed)"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I'm planning to migrate our monolith to microservices. The monolith is a Rails app serving about 50k daily active users. We'll start by extracting the auth service, then billing, then the core product logic. Each service gets its own PostgreSQL database. We'll use gRPC between services and deploy on Kubernetes. Timeline is 6 months. Grill me on this.",
+      "expected_output": "A pointed first question targeting a major risk — data migration between databases, distributed transactions, the ambitious timeline, why auth first, team readiness for Kubernetes, or the big-bang decomposition approach. Should be a single question, not a barrage.",
+      "files": [],
+      "expectations": [
+        "Response contains exactly one question — not a numbered or bulleted list of multiple questions",
+        "The question references something specific from the migration plan (e.g., the extraction order, database split, gRPC, Kubernetes, timeline, Rails monolith)",
+        "The question targets a major risk in the microservices migration — not a trivial concern",
+        "Tone is adversarial but respectful — challenges the plan without being condescending"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want to add a dark mode toggle to our Next.js app. Plan: CSS variables for theming, a toggle component in the navbar, localStorage to persist preference, and we'll respect the user's OS preference as the default. The design team already has the dark palette ready. What am I missing? /grill-me",
+      "expected_output": "A calibrated response that matches the small scope — focused question about a real concern like SSR hydration mismatch with localStorage, flash of unstyled content, accessibility of the toggle, or transition animations. Should not over-interrogate a simple feature.",
+      "files": [],
+      "expectations": [
+        "Response contains exactly one question — not a numbered or bulleted list of multiple questions",
+        "The question is calibrated to the small scope — doesn't treat this like a platform migration",
+        "The question targets a real technical concern for dark mode in Next.js (e.g., SSR/hydration, FOUC, accessibility, image/media handling, third-party components)",
+        "Tone is helpful and collaborative — less intense than for a high-stakes plan"
+      ]
+    }
+  ]
+}
