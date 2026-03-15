@@ -1,0 +1,53 @@
+{
+  "skill_name": "dont-make-me-think",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this dashboard component for usability. Is it intuitive? Can users quickly find what they need?",
+      "expected_output": "A structured usability audit identifying: too many nav items causing choice overload, no 'you are here' indicator, excessive happy talk in the welcome text, unnecessary instructions, no visual hierarchy in metric cards (labels and values are same size/color), ambiguous link text ('Learn more', 'Click here', 'Go'), and missing page name. Should provide code-level fixes for each issue.",
+      "files": ["evals/cluttered-dashboard.tsx"],
+      "assertions": [
+        { "id": "nav-overload", "text": "Identifies that 14+ navigation items create choice overload and recommends reducing or grouping them" },
+        { "id": "no-you-are-here", "text": "Flags the missing 'you are here' indicator — no nav item is highlighted to show the current page" },
+        { "id": "happy-talk", "text": "Identifies the welcome paragraphs as happy talk that should be eliminated or drastically reduced" },
+        { "id": "unnecessary-instructions", "text": "Flags the instructional text ('To get started, simply navigate...') as unnecessary — navigation should be self-evident" },
+        { "id": "no-metric-hierarchy", "text": "Identifies that metric labels and values have identical styling (same font size and color) with no visual hierarchy" },
+        { "id": "ambiguous-links", "text": "Flags 'Learn more', 'Click here', 'Go', 'See details' as ambiguous link text that doesn't describe destinations" },
+        { "id": "code-fixes", "text": "Provides specific code-level fixes (not just descriptions of problems) for at least 3 issues" },
+        { "id": "stays-usability", "text": "Does NOT recommend purely aesthetic changes like shadow elevation, color palette changes, or typography scale — stays focused on cognitive usability" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Can you check if this landing page makes sense to a first-time visitor? I want to make sure people understand what we do.",
+      "expected_output": "A usability audit identifying trunk test failures: no visible logo/site identity, tagline is a meaningless slogan ('Innovate. Transform. Succeed.'), no clear explanation of what the product actually does, feature descriptions use jargon ('synergize cross-functional paradigms'), hidden pricing (must request demo), outdated copyright year, and the page title is just 'Welcome' with no site name.",
+      "files": ["evals/landing-page.html"],
+      "assertions": [
+        { "id": "missing-identity", "text": "Identifies that the site has no visible logo or site name — fails the 'What site is this?' trunk test question" },
+        { "id": "meaningless-tagline", "text": "Flags 'Innovate. Transform. Succeed.' as a slogan, not a tagline — it says nothing about what the site/product does" },
+        { "id": "jargon-features", "text": "Identifies feature descriptions ('synergize cross-functional paradigms', 'holistic outcomes', 'operational matrix') as meaningless jargon" },
+        { "id": "no-product-clarity", "text": "Flags that after reading the entire page, a visitor still cannot tell what the product actually does" },
+        { "id": "hidden-pricing", "text": "Identifies that pricing is hidden behind a demo request — a goodwill drain" },
+        { "id": "outdated-copyright", "text": "Flags the 2024 copyright year as outdated (signals neglect)" },
+        { "id": "code-fixes", "text": "Provides specific code-level fixes (not just descriptions) for at least 3 issues" },
+        { "id": "severity-levels", "text": "Uses severity levels (critical/major/minor) to prioritize the issues" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review this registration form for usability. Users are abandoning it at a high rate and we're not sure why.",
+      "expected_output": "A usability audit identifying: too many required fields (title, company, industry, company size, referral source are unnecessary), format punishment on phone and date fields, confirm-email anti-pattern, fax number field, pre-checked marketing checkbox, critical billing info buried in tiny footer text, unclear button label ('Submit'), excessive introductory instructions, and five separate policy documents to agree to.",
+      "files": ["evals/hostile-form.tsx"],
+      "assertions": [
+        { "id": "unnecessary-fields", "text": "Identifies specific fields that should be removed or made optional (title, fax, company size, industry, referral source)" },
+        { "id": "format-punishment", "text": "Flags the phone number pattern and date format requirements as format punishment — the system should accept flexible input" },
+        { "id": "hidden-billing", "text": "Identifies the buried credit card charge ($9.99/month) in tiny footer text as a critical goodwill violation — hidden information that should be prominent" },
+        { "id": "pre-checked-marketing", "text": "Flags the pre-checked marketing email checkbox as a dark pattern" },
+        { "id": "confirm-email", "text": "Identifies the 'Confirm Email Address' field as unnecessary friction — users copy-paste anyway" },
+        { "id": "submit-label", "text": "Flags 'Submit' as a vague button label — should describe the action ('Create Account')" },
+        { "id": "code-fixes", "text": "Provides specific code-level fixes (not just descriptions) for at least 3 issues" },
+        { "id": "intro-text", "text": "Identifies the introductory paragraph as unnecessary instructions that should be removed" }
+      ]
+    }
+  ]
+}
