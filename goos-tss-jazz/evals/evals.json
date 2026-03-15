@@ -1,0 +1,53 @@
+{
+  "skill_name": "goos-tss-jazz",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm building a task management app with TanStack Start and Jazz. Users should be able to create tasks with a title and description, and see them in a list. I have the basic TanStack Start setup but no Jazz schemas or components yet. Can you help me build this feature with TDD?",
+      "expected_output": "Should follow outside-in TDD: start with a failing test (Playwright E2E acceptance test or Vitest Browser Mode component integration test), then implement schema → hook → component one RED→GREEN cycle at a time. Should define Jazz CoValue schemas (Task, TaskList). Should NOT mock jazz-tools. Should use vertical slices. Should use setupJazzTestSync() and createJazzTestAccount() for test setup.",
+      "files": [],
+      "assertions": [
+        {"id": "starts-with-failing-test", "text": "Starts with a failing test (Playwright E2E acceptance test or Vitest Browser Mode component integration test) before any implementation code"},
+        {"id": "vertical-slices", "text": "Uses vertical slices (one RED→GREEN cycle at a time) rather than writing all tests first"},
+        {"id": "uses-jazz-test-sync", "text": "Uses setupJazzTestSync() for Jazz testing — does NOT vi.mock('jazz-tools')"},
+        {"id": "creates-test-account", "text": "Uses createJazzTestAccount() to create test identities"},
+        {"id": "defines-covalue-schema", "text": "Defines Jazz CoValue schemas using co.map() for Task and co.list() for TaskList"},
+        {"id": "verifies-through-ui", "text": "Verifies behavior through rendered UI (expect.element visible) not CoValue internals"},
+        {"id": "planning-phase", "text": "Includes a planning phase identifying Jazz CoValues needed and behaviors to test"},
+        {"id": "test-names-describe-behavior", "text": "Test names describe behaviors (e.g., 'user can create a task') not methods"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need to add a sharing feature to my Jazz + TanStack Start task app. Users should be able to share a project with other users via an invite link, giving them writer access. When sharing, we also need to notify the invited user via our external email API at POST /api/emails/send. I have the Project and Task schemas already. How do I test-drive this?",
+      "expected_output": "Should identify two boundaries: Jazz Groups for sharing permissions (real in-memory sync) and MSW for the external email API. Should create Jazz Groups with correct roles. Should use createInviteLink() for invite flow. Should test multi-user scenario with createJazzTestAccount + setActiveAccount. Should reload CoValues after setActiveAccount(). Should NOT mock jazz-tools.",
+      "files": [],
+      "assertions": [
+        {"id": "two-boundary-model", "text": "Identifies and explains the two-boundary model: Jazz sync for permissions, MSW for external email API"},
+        {"id": "jazz-groups-for-sharing", "text": "Uses Jazz Groups with addMember() and correct roles (writer) for sharing — not a custom permissions layer"},
+        {"id": "msw-for-external-api", "text": "Uses MSW to mock the external email API (POST /api/emails/send)"},
+        {"id": "multi-user-test", "text": "Tests multi-user scenario with createJazzTestAccount for both sharer and invitee"},
+        {"id": "reloads-after-account-switch", "text": "Reloads CoValues after setActiveAccount() to get new permission context"},
+        {"id": "never-mocks-jazz", "text": "Does NOT use vi.mock('jazz-tools') or mock Jazz internals"},
+        {"id": "vertical-slices", "text": "Uses vertical slices (one RED→GREEN cycle at a time)"},
+        {"id": "invite-flow", "text": "Uses createInviteLink() or Group.addMember() for the invite/sharing mechanism"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want to build a real-time collaborative dashboard with TanStack Start + Jazz. It should show a list of metrics (name + value) that multiple team members can update simultaneously. When a metric is updated by one user, all connected users should see the change. I need a walking skeleton first, then we'll build out the full feature. How should I approach this with TDD?",
+      "expected_output": "Should start with a walking skeleton: a Playwright E2E test proving the thinnest end-to-end slice works (build/deploy/test infrastructure). Then use Vitest Browser Mode component integration tests with JazzTestProvider + setupJazzTestSync() to drive implementation. Should define CoValue schemas for Metric and MetricList. Should test real-time updates by mutating CoValues and asserting UI updates. Should use useCoState for reactive rendering. Should follow GOOS walking skeleton → incremental loop pattern.",
+      "files": [],
+      "assertions": [
+        {"id": "walking-skeleton-first", "text": "Starts with a walking skeleton — the thinnest possible end-to-end slice, ideally a Playwright E2E test proving infrastructure works"},
+        {"id": "uses-jazz-test-sync", "text": "Uses setupJazzTestSync() and JazzTestProvider for authentic sync testing"},
+        {"id": "tests-realtime-sync", "text": "Tests real-time sync by mutating a CoValue and asserting the UI updates reactively"},
+        {"id": "defines-covalue-schema", "text": "Defines appropriate CoValue schemas (e.g., Metric as co.map, MetricList as co.list)"},
+        {"id": "uses-useCoState", "text": "Uses useCoState hook for reactive data rendering in components"},
+        {"id": "incremental-after-skeleton", "text": "After walking skeleton, follows incremental RED→GREEN loop for additional behaviors"},
+        {"id": "multi-user-consideration", "text": "Considers or tests multi-user scenario (multiple team members editing simultaneously)"},
+        {"id": "vitest-browser-mode", "text": "Uses Vitest Browser Mode (vitest-browser-react) for component tests, not jsdom/RTL"}
+      ]
+    }
+  ]
+}
