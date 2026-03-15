@@ -1,0 +1,69 @@
+{
+  "skill_name": "refactoring-ui",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build me a dashboard stats card component in React with Tailwind CSS. It should show three metrics: Monthly Revenue ($48,250), Active Users (2,847 with +12.5% growth), and Conversion Rate (3.6% with -0.8% decline). Each metric should have a label, value, and trend indicator. Make it look professional and polished.",
+      "expected_output": "A React component using Tailwind that demonstrates proper visual hierarchy (metric values are primary/large/bold, labels are secondary/smaller/lighter, trend indicators use semantic color), consistent spacing from a scale, shadow elevation for the card, HSL-based colors, proper typography scale, and finishing touches like accent borders or icons replacing plain text indicators.",
+      "files": [],
+      "assertions": [
+        { "id": "hierarchy-levels", "text": "The metric values (dollar amounts, numbers) are visually more prominent than their labels through a combination of larger size, bolder weight, and/or darker color" },
+        { "id": "semantic-color", "text": "Growth/positive trends use green and decline/negative trends use red (or equivalent semantic colors), not arbitrary colors" },
+        { "id": "spacing-consistency", "text": "Spacing values come from a consistent scale (e.g., Tailwind spacing utilities) rather than arbitrary pixel values" },
+        { "id": "shadow-elevation", "text": "The card uses a box-shadow or Tailwind shadow class to create elevation" },
+        { "id": "typography-scale", "text": "Font sizes follow a defined scale (Tailwind text-* classes or a consistent px scale) with clear size differences between hierarchy levels" },
+        { "id": "accent-border", "text": "The card has an accent border (colored top border, left border, or gradient border) adding visual flair" },
+        { "id": "flipped-contrast-badges", "text": "Trend badges use dark colored text on light colored background (e.g., dark green text on light green bg) rather than white text on saturated background" },
+        { "id": "two-part-shadow", "text": "The card shadow uses two box-shadow values (direct light + ambient light) for realistic depth, OR uses a compound Tailwind shadow" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This pricing page component looks amateur and unprofessional. Please improve it to look polished and well-designed. Fix any design issues you find.",
+      "expected_output": "The component should be refactored with: proper typography (line-heights adjusted, font scale applied, long centered text left-aligned or shortened), coherent color system (HSL-based, consistent palette), visual hierarchy improvements (price is primary, plan names use proper weight), shadow/elevation on cards, accent borders or visual polish, improved spacing using a consistent scale, and bullet points potentially replaced with check icons.",
+      "files": ["evals/pricing-page.tsx"],
+      "assertions": [
+        { "id": "line-height-fixed", "text": "The long description paragraph has increased line-height (at least 1.5) compared to the original 1.2" },
+        { "id": "centered-text-fixed", "text": "The long paragraph description is either left-aligned, shortened to 2-3 lines, or given a max-width constraint" },
+        { "id": "color-system", "text": "Colors use HSL format or Tailwind color classes instead of raw hex codes like #4a90d9 and #ccc" },
+        { "id": "card-elevation", "text": "The pricing cards have shadows or elevated styling instead of just a plain border" },
+        { "id": "visual-polish", "text": "At least one finishing touch is added: accent border on cards, icons replacing bullets, custom badge styling, or gradient/background treatment" },
+        { "id": "saturated-greys", "text": "Grey colors are slightly saturated (have a hint of blue or warm hue) rather than being pure neutral greys (saturation 0%)" },
+        { "id": "fewer-borders", "text": "At least some borders from the original are replaced with spacing, background changes, or shadows for visual separation" },
+        { "id": "label-deemphasis", "text": "Plan names or feature labels are de-emphasized (smaller, lighter, uppercase) while the price values are the primary visual element in each card" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I have this form component that looks really amateur. Can you help me improve it? The design feels flat, the labels are hard to read, and it just doesn't look professional at all.",
+      "expected_output": "The form should be improved with: better label contrast (not #aaa which fails WCAG), input depth (inset shadows or better borders), clear section hierarchy using spacing instead of border-bottom separators, proper spacing scale, custom-styled checkboxes, accent treatment on the submit button, and overall visual polish.",
+      "files": ["evals/contact-form.tsx"],
+      "assertions": [
+        { "id": "label-contrast", "text": "Labels have darker/higher-contrast colors than the original #aaa, making them readable (at least grey-600 equivalent)" },
+        { "id": "input-depth", "text": "Text inputs have inset shadows or recessed styling to simulate depth, not just flat borders" },
+        { "id": "section-spacing", "text": "Sections are separated by spacing rather than (or in addition to) border-bottom dividers — at least one original border is removed" },
+        { "id": "button-hierarchy", "text": "The submit button is visually more prominent than the cancel button through size, color intensity, or shadow" },
+        { "id": "form-polish", "text": "At least one finishing touch is applied: custom checkbox styling, focus ring colors, rounded corners, or subtle card/panel treatment" },
+        { "id": "accent-border", "text": "The form card has an accent border (colored top, left, or bottom border) adding visual flair" },
+        { "id": "hsl-colors", "text": "Colors use HSL format rather than hex codes" },
+        { "id": "spacing-scale", "text": "Spacing values follow a defined scale (e.g., 4, 8, 12, 16, 24, 32, 48, 64) rather than arbitrary values like 6, 10, 14, 20, 40" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "This landing page has several design problems: the hero text is hard to read on the background image, the feature icons are scaled-up numbers instead of proper icons, the feature descriptions have poor line-height, and the empty state for Recent Activity is bare and unhelpful. Please fix all the design issues and make it look professional.",
+      "expected_output": "The hero should have a semi-transparent overlay or text shadow for readability. Feature icons should be wrapped in background shapes at proper size, not scaled numbers. Description line-heights should be 1.5+. Empty state should have an icon, helpful message, and CTA button. Colors should use HSL, spacing from a scale.",
+      "files": ["evals/hero-section.tsx"],
+      "assertions": [
+        { "id": "text-on-image", "text": "The hero section has improved text readability through at least one technique: semi-transparent overlay, lowered image contrast/brightness, colorized image, or text-shadow" },
+        { "id": "icon-sizing", "text": "Feature icons are NOT just scaled-up numbers — they use SVG icons, icon components, or numbers wrapped in properly sized background shapes at a reasonable size" },
+        { "id": "empty-state-designed", "text": "The empty state includes more than just 'No activity yet' — it has at least an icon/illustration AND a helpful description or CTA button" },
+        { "id": "description-line-height", "text": "Feature description text has line-height of at least 1.5 (was 1.3 in the original)" },
+        { "id": "feature-hierarchy", "text": "Feature titles are visually more prominent than descriptions through size, weight, AND/OR color differences" },
+        { "id": "consistent-spacing", "text": "Spacing follows a consistent scale rather than arbitrary values" },
+        { "id": "color-system", "text": "Colors use HSL format or Tailwind color classes instead of raw hex codes" },
+        { "id": "hero-headline-typography", "text": "The hero headline has appropriate typography: tight line-height (1-1.25) for the large text and/or negative letter-spacing" }
+      ]
+    }
+  ]
+}
