@@ -1,6 +1,6 @@
 ---
 name: goos-tss
-description: Use when building or testing TanStack Start applications with test-driven development, writing acceptance tests with Playwright or Vitest Browser Mode, designing hooks and services for testability, mocking APIs with MSW, or applying outside-in TDD workflow
+description: Use when building or testing TanStack Start applications with test-driven development, writing acceptance tests with Playwright, component tests with Vitest Browser Mode, designing hooks and services for testability, mocking APIs with MSW, or applying outside-in TDD workflow
 ---
 
 # GOOS-Style TDD for TanStack Start
@@ -40,8 +40,8 @@ Each cycle through the inner loop teaches you something about the design. You ne
 
 | GOOS Principle    | TanStack Start Pattern                                                    |
 | ----------------- | ------------------------------------------------------------------------- |
-| Walking Skeleton  | Playwright E2E or Vitest Browser Mode test on real route                  |
-| Acceptance Test   | Playwright (`@playwright/test`) for E2E; Vitest Browser Mode for components |
+| Walking Skeleton  | Playwright E2E test — thinnest slice proving the full stack works end-to-end |
+| Acceptance Test   | Playwright (`@playwright/test`) — full app, exercised from outside        |
 | Page Objects      | Playwright Page Object Model classes                                      |
 | Unit Test         | Vitest (Node) for pure functions — validators, services, utilities        |
 | Mock Objects      | MSW request handlers (`http.get()`, `http.post()`)                        |
@@ -58,7 +58,7 @@ Each cycle through the inner loop teaches you something about the design. You ne
 Before writing any code:
 
 - [ ] Confirm with user what interface changes are needed
-- [ ] Determine test type: Playwright (multi-page E2E) or Vitest Browser Mode (single-page component)
+- [ ] Determine test type: Playwright for acceptance tests (outer loop) or Vitest Browser Mode for component tests (inner loop)
 - [ ] Confirm which behaviors to test (prioritize — you can't test everything)
 - [ ] Identify opportunities for [deep modules](deep-modules.md)
 - [ ] Design interfaces for [testability](interface-design.md)
@@ -67,11 +67,16 @@ Before writing any code:
 
 ### 2. Tracer Bullet
 
-Write ONE failing test → minimal implementation → GREEN. This is your walking skeleton. See [acceptance-tests.md](acceptance-tests.md).
+Write ONE failing Playwright E2E test → minimal implementation → GREEN. This is your walking skeleton — it proves the full stack works end-to-end (route → page → hook → service → API). See [acceptance-tests.md](acceptance-tests.md).
+
+For individual features in an existing app, starting with a Vitest Browser Mode component test is pragmatic — just don't call it an "acceptance test" or "walking skeleton" in the GOOS sense.
 
 ```
-E2E:       RED: page.goto('/route') → expect → GREEN: Route → Page → Hook → Service
-Component: RED: render(<Page />) → expect.element() → GREEN: Component → Hook → MSW
+Walking skeleton / acceptance test (outer loop):
+  RED: page.goto('/route') → expect → GREEN: Route → Page → Hook → Service
+
+Component test (inner loop):
+  RED: render(<Page />) → expect.element() → GREEN: Component → Hook → MSW
 ```
 
 ### 3. Incremental Loop

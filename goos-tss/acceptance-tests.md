@@ -4,7 +4,7 @@
 
 The acceptance test is the outer loop of outside-in TDD. Every feature starts with a failing acceptance test that describes what the system should do from the user's perspective.
 
-**The walking skeleton IS the first acceptance test** — the thinnest end-to-end slice that decides broad-brush architecture and front-loads integration risk before you write real features.
+**The walking skeleton IS the first acceptance test** — the thinnest end-to-end slice that decides broad-brush architecture and front-loads integration risk before you write real features. It is always a Playwright E2E test (`@playwright/test`), never a component render — the point is proving the entire stack works together (route → page → hook → service → API).
 
 **The development cycle:**
 
@@ -32,8 +32,8 @@ The acceptance test is the outer loop of outside-in TDD. Every feature starts wi
 ### When to Use Which
 
 - **Vitest Node**: Pure logic with no React, no DOM, no API calls — `parseApiError()`, `encryptCredentials()`, Zod schemas
-- **Vitest Browser Mode**: Single-page features — login form, dashboard rendering, form validation. Tests run _inside_ the real browser. This is the **inner loop**.
-- **Playwright**: Multi-page flows — login → dashboard → settings. Auth persistence, SSR verification, navigation between routes. This is the **outer loop**.
+- **Vitest Browser Mode**: Single-page features — login form, dashboard rendering, form validation. Tests run _inside_ the real browser. This is the **inner loop** — component/integration level. These are NOT acceptance tests in the GOOS sense.
+- **Playwright**: Full app exercised from outside — login → dashboard → settings. Auth persistence, SSR verification, navigation between routes. This is the **outer loop** — acceptance tests and walking skeletons live here.
 
 ## Vitest Browser Mode (Inner Loop)
 
@@ -185,14 +185,7 @@ test('user can login and see dashboard', async ({ page }) => {
 
 ## Walking Skeleton Examples
 
-### Vitest Browser Mode (Component)
-
-```tsx
-test('walking skeleton — login page renders', async () => {
-  const screen = render(<LoginPage />, { wrapper: TestWrapper })
-  await expect.element(screen.getByRole('button', { name: 'Sign In' })).toBeVisible()
-})
-```
+A walking skeleton is always a Playwright E2E test — it proves the full stack integrates end-to-end.
 
 ### Playwright (E2E)
 

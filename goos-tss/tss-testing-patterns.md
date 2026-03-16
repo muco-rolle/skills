@@ -10,7 +10,7 @@ Maps GOOS concepts to TanStack Start + React 19 + Vitest + Playwright equivalent
 | jMock                   | MSW (`msw`) + `vi.mock()` + `vi.fn()`                                 |
 | Hamcrest Matchers       | Vitest `expect` + `expect.element()` (browser mode)                    |
 | Test Fixtures           | `beforeEach()` / `afterEach()` + MSW `server.use()`                   |
-| Walking Skeleton        | Vitest Browser Mode test or Playwright test on real route              |
+| Walking Skeleton        | Playwright E2E test on real route — proves full stack integration      |
 | Ports & Adapters        | Routes → Pages → Action Hooks → Services → OpenAPI Clients            |
 | Mock Objects            | MSW request handlers (`http.get()`, `http.post()`)                     |
 | Adapter Layer           | OpenAPI typed clients (`lclient`, `uclient`) wrapping external APIs    |
@@ -28,8 +28,32 @@ Maps GOOS concepts to TanStack Start + React 19 + Vitest + Playwright equivalent
 
 ### Step 1: Failing Acceptance Test (Outer Loop)
 
+The outer loop starts with a Playwright E2E test — this exercises the full app from the outside, just like GOOS prescribes.
+
+```typescript
+// tests/e2e/auth/login.spec.ts — Playwright E2E
+import { test, expect } from '@playwright/test'
+
+test('user can login and reach dashboard', async ({ page }) => {
+  await page.goto('/login')
+
+  await page.getByLabel('Email Address').fill('admin@example.com')
+  await page.getByLabel('Password').fill('password123')
+  await page.getByRole('button', { name: 'Sign In' }).click()
+
+  await expect(page).toHaveURL(/.*dashboard/)
+  await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible()
+})
+```
+
+This test fails — no login route, no page, no backend integration exist yet.
+
+### Step 1b: Component Test (Inner Loop Starting Point)
+
+For simpler features in an existing app, starting with a Vitest Browser Mode component test is pragmatic. This is inner loop — don't call it an "acceptance test" in the GOOS sense.
+
 ```tsx
-// Component test — Vitest Browser Mode
+// tests/browser/auth/login.test.tsx — Vitest Browser Mode
 test('user can login with valid credentials', async () => {
   server.use(
     http.post('*/auth/admin/login', () => {
@@ -46,8 +70,6 @@ test('user can login with valid credentials', async () => {
   await expect.element(screen.getByText('Dashboard')).toBeVisible()
 })
 ```
-
-This test fails — no LoginPage, no hook, no API integration exist yet.
 
 ### Step 2: Unit Tests Drive Design (Inner Loop)
 
@@ -79,7 +101,7 @@ test('parseApiError extracts field errors from 422 response', () => {
 
 ### Step 3: Implement Until Acceptance Test Passes
 
-Build LoginPage → useLogin hook → encryptCredentials service → MSW-controlled API, running unit tests along the way, until the component test goes green.
+Build LoginPage → useLogin hook → encryptCredentials service → API integration, running unit tests along the way, until the acceptance test goes green.
 
 ## Verify Through the Interface
 
@@ -176,8 +198,8 @@ test('user can update merchant name', async () => {
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  Acceptance Tests                                    │
-│  E2E: Playwright | Component: Vitest Browser Mode    │
+│  Tests                                               │
+│  Outer loop: Playwright E2E | Inner loop: Vitest BM  │
 │  ┌────────────────────────────────────────────────┐  │
 │  │  Routes (TanStack Router file-based)           │  │
 │  │  ┌────────────────────────────────────────┐    │  │
