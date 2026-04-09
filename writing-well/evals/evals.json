@@ -1,0 +1,33 @@
+{
+  "skill_name": "writing-well",
+  "evals": [
+    {
+      "id": 1,
+      "name": "write-intro-hooks",
+      "prompt": "I want to write a blog post about why most productivity advice fails. The core insight is that productivity systems break because they ignore energy management - people try to optimize time but burn out. Help me write a compelling introduction with hooks that will make readers want to continue.",
+      "expected_output": "An introduction that uses hooks (narrative, research, or argument style), teases the counter-intuitive insight about energy vs time management, and creates suspense without giving away the full answer.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "rewrite-for-clarity",
+      "prompt": "Help me rewrite this paragraph to be more clear and succinct. It's from a blog post about remote work:\n\n'The implementation of remote work policies by organizations across various industries has been demonstrated to have significant implications for the operational efficiency and productivity metrics of said organizations, with research indicating that employees who are afforded the opportunity to work from locations other than the traditional office environment often report higher levels of satisfaction and work-life balance integration.'",
+      "expected_output": "A rewritten paragraph that uses simple language, removes abstract phrasing, has one idea per sentence, and is significantly shorter while preserving the core meaning.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "choose-topic-objective",
+      "prompt": "I want to start writing but I'm stuck choosing what to write about. I'm a software engineer with 8 years of experience. I'm interested in: career growth for engineers, system design, debugging strategies, and how AI is changing programming. I feel like I have opinions about all of these but don't know which one to pick or what angle to take. Help me choose a topic and define a clear objective.",
+      "expected_output": "Help the user narrow down to a specific topic with a paired objective and motivation. Should guide them through the 7 objectives framework and ask clarifying questions about what bugs them or what unique insights they have.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "add-intrigue-dopamine",
+      "prompt": "I have this draft section for an article about habit formation. It's factually correct but feels boring. Help me make it more intriguing:\n\n'Habits are formed through repetition. When you repeat a behavior, it becomes automatic over time. This is because your brain creates neural pathways that make the behavior easier to perform. The more you do something, the stronger these pathways become. Eventually, the behavior requires less conscious effort. Scientists have studied this process and found that it takes about 66 days on average to form a new habit.'",
+      "expected_output": "A rewritten section that adds novelty (counter-intuitive insights, surprising facts), uses the dopamine counting approach, possibly restructures with a hook that withholds information, and makes the content more engaging while keeping accuracy.",
+      "files": []
+    }
+  ]
+}
